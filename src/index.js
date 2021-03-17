@@ -83,7 +83,7 @@ app.put('/todos/:id', checksExistsUserAccount, (request, response) => {
   user.todos[userIndex].title = title;
   user.todos[userIndex].deadline = deadline;
   
-  return response.status(201).send(user);
+  return response.status(201).send(user.todos[userIndex]);
 });
 
 app.patch('/todos/:id/done', checksExistsUserAccount, (request, response) => {
