@@ -87,11 +87,40 @@ app.put('/todos/:id', checksExistsUserAccount, (request, response) => {
 });
 
 app.patch('/todos/:id/done', checksExistsUserAccount, (request, response) => {
-  // Complete aqui
+  const { user } = request;
+  const { id }  = request.params;
+
+  const idExists = user.todos.some(todo => todo.id === id);
+
+  const userIndex = user.todos.findIndex(todo => todo.id === id);
+
+  console.log(user.todos[userIndex]);
+
+  if (!idExists) {
+    return response.status(404).json({error: "ToDo doesnt exists!"});
+  }
+
+  user.todos[userIndex].done = true;
+
+  return response.status(201).send(user.todos[userIndex]);
 });
 
+
 app.delete('/todos/:id', checksExistsUserAccount, (request, response) => {
-  // Complete aqui
+  const { user } = request;
+  const { id }  = request.params;
+
+  const idExists = user.todos.some(todo => todo.id === id);
+
+  const userIndex = user.todos.findIndex(todo => todo.id === id);
+
+  if (!idExists) {
+    return response.status(404).json({error: "ToDo doesnt exists!"});
+  }
+
+  user.todos.splice(userIndex, 1);
+
+  return response.status(204).send();
 });
 
 module.exports = app;
